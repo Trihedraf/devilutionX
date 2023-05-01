@@ -828,30 +828,7 @@ void DiabloDeath(Monster &diablo, bool sendmsg)
 	quest._qactive = QUEST_DONE;
 	if (sendmsg)
 		NetSendCmdQuest(true, quest);
-	sgbSaveSoundOn = gbSoundOn;
-	gbProcessPlayers = false;
-	for (size_t i = 0; i < ActiveMonsterCount; i++) {
-		int monsterId = ActiveMonsters[i];
-		Monster &monster = Monsters[monsterId];
-		if (monster.type().type == MT_DIABLO || diablo.activeForTicks == 0)
-			continue;
 
-		NewMonsterAnim(monster, MonsterGraphic::Death, monster.direction);
-		monster.mode = MonsterMode::Death;
-		monster.var1 = 0;
-		monster.position.tile = monster.position.old;
-		monster.position.future = monster.position.tile;
-		M_ClearSquares(monster);
-		dMonster[monster.position.tile.x][monster.position.tile.y] = monsterId + 1;
-	}
-	AddLight(diablo.position.tile, 8);
-	DoVision(diablo.position.tile, 8, MAP_EXP_NONE, true);
-	int dist = diablo.position.tile.WalkingDistance(ViewPosition);
-	if (dist > 20)
-		dist = 20;
-	diablo.var3 = ViewPosition.x << 16;
-	diablo.position.temp.x = ViewPosition.y << 16;
-	diablo.position.temp.y = (int)((diablo.var3 - (diablo.position.tile.x << 16)) / (double)dist);
 	if (!gbIsMultiplayer) {
 		Player &myPlayer = *MyPlayer;
 		myPlayer.pDiabloKillLevel = std::max(myPlayer.pDiabloKillLevel, static_cast<uint8_t>(sgGameInitInfo.nDifficulty + 1));
@@ -1498,17 +1475,6 @@ void MonsterDeath(Monster &monster)
 {
 	monster.var1++;
 	if (monster.type().type == MT_DIABLO) {
-		if (monster.position.tile.x < ViewPosition.x) {
-			ViewPosition.x--;
-		} else if (monster.position.tile.x > ViewPosition.x) {
-			ViewPosition.x++;
-		}
-
-		if (monster.position.tile.y < ViewPosition.y) {
-			ViewPosition.y--;
-		} else if (monster.position.tile.y > ViewPosition.y) {
-			ViewPosition.y++;
-		}
 
 		if (monster.var1 == 140)
 			PrepDoEnding();
@@ -3808,25 +3774,9 @@ void DoEnding()
 
 void PrepDoEnding()
 {
-	gbSoundOn = sgbSaveSoundOn;
-	gbRunGame = false;
-	MyPlayerIsDead = false;
-	cineflag = true;
-
 	Player &myPlayer = *MyPlayer;
 
 	myPlayer.pDiabloKillLevel = std::max(myPlayer.pDiabloKillLevel, static_cast<uint8_t>(sgGameInitInfo.nDifficulty + 1));
-
-	for (Player &player : Players) {
-		player._pmode = PM_QUIT;
-		player._pInvincible = true;
-		if (gbIsMultiplayer) {
-			if (player._pHitPoints >> 6 == 0)
-				player._pHitPoints = 64;
-			if (player._pMana >> 6 == 0)
-				player._pMana = 64;
-		}
-	}
 }
 
 bool Walk(Monster &monster, Direction md)
