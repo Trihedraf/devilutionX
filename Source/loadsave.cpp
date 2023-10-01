@@ -441,10 +441,10 @@ void LoadPlayer(LoadHelper &file, Player &player)
 	file.Skip(3); // Alignment
 
 	// Extra hotkeys: to keep single player save compatibility, read only 4 hotkeys here, rely on LoadHotkeys for the rest
-	for (size_t i = 0; i < 4; i++) {
+	for (size_t i = 0; i < MaxPlayersSp; i++) {
 		player._pSplHotKey[i] = static_cast<SpellID>(file.NextLE<int32_t>());
 	}
-	for (size_t i = 0; i < 4; i++) {
+	for (size_t i = 0; i < MaxPlayersSp; i++) {
 		player._pSplTHotKey[i] = static_cast<SpellType>(file.NextLE<uint8_t>());
 	}
 
@@ -1246,10 +1246,10 @@ void SavePlayer(SaveHelper &file, const Player &player)
 	file.Skip(3); // Alignment
 
 	// Extra hotkeys: to keep single player save compatibility, write only 4 hotkeys here, rely on SaveHotkeys for the rest
-	for (size_t i = 0; i < 4; i++) {
+	for (size_t i = 0; i < MaxPlayersSp; i++) {
 		file.WriteLE<int32_t>(static_cast<int8_t>(player._pSplHotKey[i]));
 	}
-	for (size_t i = 0; i < 4; i++) {
+	for (size_t i = 0; i < MaxPlayersSp; i++) {
 		file.WriteLE<uint8_t>(static_cast<uint8_t>(player._pSplTHotKey[i]));
 	}
 
@@ -2444,7 +2444,7 @@ tl::expected<void, std::string> LoadGame(bool firstflag)
 
 	for (int i = 0; i < giNumberQuests; i++)
 		LoadQuest(&file, i);
-	for (int i = 0; i < MAXPORTAL; i++)
+	for (int i = 0; i < MaxPlayersSp; i++)
 		LoadPortal(&file, i);
 
 	if (gbIsHellfireSaveGame != gbIsHellfire) {
@@ -2722,7 +2722,7 @@ void SaveGameData(SaveWriter &saveWriter)
 
 	for (int i = 0; i < giNumberQuests; i++)
 		SaveQuest(&file, i);
-	for (int i = 0; i < MAXPORTAL; i++)
+	for (int i = 0; i < MaxPlayersSp; i++)
 		SavePortal(&file, i);
 	for (int monstkill : MonsterKillCounts)
 		file.WriteBE<int32_t>(monstkill);

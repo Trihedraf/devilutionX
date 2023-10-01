@@ -249,7 +249,7 @@ struct MultiQuests {
 };
 
 struct DJunk {
-	DPortal portal[MAXPORTAL];
+	DPortal portal[MaxPlayers];
 	MultiQuests quests[MAXQUESTS];
 };
 #pragma pack(pop)
@@ -628,7 +628,7 @@ std::byte *DeltaExportJunk(std::byte *dst)
 
 void DeltaImportJunk(const std::byte *src)
 {
-	for (int i = 0; i < MAXPORTAL; i++) {
+	for (int i = 0; i < MaxPlayers; i++) {
 		if (*src == std::byte { 0xFF }) {
 			memset(&sgJunk.portal[i], 0xFF, sizeof(DPortal));
 			src++;
@@ -1742,7 +1742,7 @@ size_t OnWarp(const TCmd *pCmd, Player &player)
 
 	if (gbBufferMsgs == 1) {
 		SendPacket(player, &message, sizeof(message));
-	} else if (portalIdx < MAXPORTAL) {
+	} else if (portalIdx < MaxPlayers) {
 		StartWarpLvl(player, portalIdx);
 	}
 
@@ -2589,7 +2589,7 @@ void delta_sync_monster(const TSyncMonster &monsterSync, uint8_t level)
 
 void DeltaSyncJunk()
 {
-	for (int i = 0; i < MAXPORTAL; i++) {
+	for (int i = 0; i < MaxPlayers; i++) {
 		if (sgJunk.portal[i].x == 0xFF) {
 			SetPortalStats(i, false, { 0, 0 }, 0, DTYPE_TOWN, false);
 		} else {
