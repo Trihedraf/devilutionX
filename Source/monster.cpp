@@ -3263,7 +3263,6 @@ void InitLevelMonsters()
 
 	ClrAllMonsters();
 	ActiveMonsterCount = 0;
-
 	totalmonsters = MaxMonsters;
 
 	std::iota(std::begin(ActiveMonsters), std::end(ActiveMonsters), 0u);
@@ -3555,7 +3554,6 @@ tl::expected<void, std::string> InitMonsters()
 		size_t numplacemonsters = na / 30;
 		if (gbIsMultiplayer)
 			numplacemonsters += numplacemonsters / 2;
-
 		if (ActiveMonsterCount + numplacemonsters > MaxMonsters - 10)
 			numplacemonsters = MaxMonsters - 10 - ActiveMonsterCount;
 		totalmonsters = ActiveMonsterCount + numplacemonsters;
