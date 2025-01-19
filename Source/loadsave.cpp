@@ -36,6 +36,7 @@
 #include "pfile.h"
 #include "playerdat.hpp"
 #include "plrmsg.h"
+#include "portal.h"
 #include "qol/stash.h"
 #include "stores.h"
 #include "utils/algorithm/container.hpp"
