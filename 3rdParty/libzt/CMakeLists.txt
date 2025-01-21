@@ -37,7 +37,8 @@ endforeach(lib_name)
 target_include_directories(${libzt_LIB_NAME} INTERFACE
   "${libzt_SOURCE_DIR}/include"
   "${libzt_SOURCE_DIR}/src"
-  "${libzt_SOURCE_DIR}/ext/lwip/src/include")
+  "${libzt_SOURCE_DIR}/ext/lwip/src/include"
+  "${libzt_SOURCE_DIR}/ext/ZeroTierOne/ext/prometheus-cpp-lite-1.0/simpleapi/include")
 
 if(WIN32)
   target_include_directories(${libzt_LIB_NAME} INTERFACE
