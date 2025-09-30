@@ -418,6 +418,7 @@ if(APPLE)
   elseif(DARWIN_MAJOR_VERSION GREATER_EQUAL 17)
     set(MACOSX_BUNDLE_REQUIRED_PLATFORM Carbon)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13.0")
+    set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE STRING "Build architectures for Mac OS X" FORCE)
   endif()
   if(DARWIN_MAJOR_VERSION VERSION_LESS 9)
     # Finder on OSX Tiger can only handle icns files with up to 128x128 icons.
